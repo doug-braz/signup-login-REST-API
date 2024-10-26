@@ -8,7 +8,6 @@ def SignUp(request):
     return render(request, 'signup/signup.html')
 
 class CreateAccountView(APIView):
-    
     def post(self, request, *args, **kwargs):
         serializer = AccountSerializer(data=request.data)
         if serializer.is_valid():

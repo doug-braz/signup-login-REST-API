@@ -8,40 +8,90 @@
 </head>
 <body>
     <h2>Registration form </h2>
-    <div class="mb-3 col-md-4">
-          <label for="username" class="form-label">Username</label>
-          <input class="form-control" id="username">
-    </div>
-    <div class="mb-3 col-md-4">
-        <label for="email" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else
+
+    <form id="signUpForm">
+        {% csrf_token %}
+        <div class="mb-3 col-md-4">
+            <label for="username" class="form-label">Username</label>
+            <input class="form-control" id="username">
         </div>
-    </div>
 
-    <div class="mb-3 col-md-4">
-        <label for="password1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password1">
-    </div>
+        <div class="mb-3 col-md-4">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else
+            </div>
+        </div>
 
-    <div class="mb-3 col-md-4">
-        <label for="password2" class="form-label">Repeat password</label>
-        <input type="password" class="form-control" id="password2">
-    </div>
+        <div class="mb-3 col-md-4">
+            <label for="password1" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password1">
+        </div>
 
-    <div class="mb-3 col-md-4">
-        <label for="firstname" class="form-label">First name</label>
-        <input class="form-control" id="firstname">
-    </div>
+        <div class="mb-3 col-md-4">
+            <label for="password2" class="form-label">Repeat password</label>
+            <input type="password" class="form-control" id="password2">
+        </div>
 
-    <div class="mb-3 col-md-4">
-        <label for="lastname" class="form-label">First name</label>
-        <input class="form-control" id="lastname">
-    </div>
-        
-    <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="mb-3 col-md-4">
+            <label for="first_name" class="form-label">First name</label>
+            <input class="form-control" id="first_name">
+        </div>
+
+        <div class="mb-3 col-md-4">
+            <label for="last_name" class="form-label">Last name</label>
+            <input class="form-control" id="last_name">
+        </div>
+            
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 
 
     </form>
+    
+    <script>
+        document.getElementById('signUpForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evita o envio padrão do formulário
+
+        formData = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password1: document.getElementById('password1').value,
+                password2: document.getElementById('password2').value,
+                first_name: document.getElementById('first_name').value,
+                last_name: document.getElementById('last_name').value,
+        }
+
+
+        // Captura o token CSRF do meta tag
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // Get the CSRF token
+
+        fetch('/sign-up/createaccountAPI/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken, // Inclui o token CSRF nos headers
+            },
+            body: JSON.stringify(formData)
+            })
+            .then(response => {
+            if (response.ok) {
+                return response.json(); // Parse the response JSON
+            }
+            throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+                // Handle success (data contains the response)
+                if (data.message) {
+                    alert(data.message); // Alert the success message
+                }
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('There was a problem with the fetch operation:', error);
+            });
+            });
+        </script>
+
 </body>
 </html>

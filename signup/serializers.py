@@ -29,10 +29,9 @@ class AccountSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'password':'The passwords provided are different!'})
         return attrs
     
-    def create(self,validated_data):
+    def create(self, validated_data):
         password = validated_data.pop('password1') # The unhashed passwords is stored but is removed from validated_data
         validated_data.pop('password2')
-
-        validated_data[password] = make_password(password) # This step hashes the password
+        validated_data['password'] = make_password(password) # This step hashes the password
 
         return Account.objects.create(**validated_data)
