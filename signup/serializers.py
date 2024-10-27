@@ -8,11 +8,13 @@ from django.contrib.auth.hashers import make_password
 class AccountSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         required=True,
-        validators=[UniqueValidator(queryset=Account.objects.all())]    
+        validators=[UniqueValidator(queryset=Account.objects.all())],
+
     )
     username = serializers.CharField(
         required=True,
-        validators=[UniqueValidator(queryset=Account.objects.all())]
+        validators=[UniqueValidator(queryset=Account.objects.all())],
+        min_length = 3,
     )
 
     #* Passwords need to be write_only for safety reasons!

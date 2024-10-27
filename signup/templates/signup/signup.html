@@ -14,14 +14,17 @@
         <div class="mb-3 col-md-4">
             <label for="username" class="form-label">Username</label>
             <input class="form-control" id="username">
+            <div id="usernameError" ></div>
         </div>
-
+        
         <div class="mb-3 col-md-4">
             <label for="email" class="form-label">Email address</label>
             <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
             <div id="emailHelp" class="form-text">We'll never share your email with anyone else
+            <div id="emailError" ></div>
             </div>
         </div>
+        
 
         <div class="mb-3 col-md-4">
             <label for="password1" class="form-label">Password</label>
@@ -31,6 +34,7 @@
         <div class="mb-3 col-md-4">
             <label for="password2" class="form-label">Repeat password</label>
             <input type="password" class="form-control" id="password2">
+            <div id="passwordError"  role="alert"></div>
         </div>
 
         <div class="mb-3 col-md-4">
@@ -70,15 +74,22 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken, // Inclui o token CSRF nos headers
+                'X-CSRFToken': csrfToken,
             },
             body: JSON.stringify(formData)
             })
             .then(response => {
             if (response.ok) {
                 return response.json(); // Parse the response JSON
-            }
-            throw new Error('Network response was not ok.');
+            } 
+            else {
+                return response.json().then(errorData => {
+                // Lança um erro com os dados detalhados da resposta
+                    throw errorData;
+
+                        }
+            )}
+            
             })
             .then(data => {
                 // Handle success (data contains the response)
@@ -86,12 +97,30 @@
                     alert(data.message); // Alert the success message
                 }
             })
-            .catch(error => {
-                // Handle errors
-                console.error('There was a problem with the fetch operation:', error);
+            .catch(errorData => {
+                document.getElementById('usernameError').innerText = "";
+                document.getElementById('passwordError').innerText = "";
+
+                document.getElementById('usernameError').classList.remove("alert", "alert-danger");
+                document.getElementById('passwordError').classList.remove("alert", "alert-danger");
+
+                if (errorData.username){
+                    document.getElementById('usernameError').innerText = errorData.username;
+                    document.getElementById('usernameError').classList.add("alert", "alert-danger");
+                }
+                if (errorData.password1){
+                    document.getElementById('passwordError').innerText = errorData.password1;
+                    document.getElementById('passwordError').classList.add("alert", "alert-danger");
+
+                }
+                if (errorData.password){
+                    document.getElementById('passwordError').innerText = errorData.password;
+                    document.getElementById('passwordError').classList.add("alert", "alert-danger");
+
+                }
             });
             });
-        </script>
+    </script>
 
 </body>
 </html>
