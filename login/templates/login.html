@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    <h2>Registration form </h2>
+
+    <form id="loginForm">
+        {% csrf_token %}
+        <div class="mb-3 col-md-4">
+            <label for="username" class="form-label">Username</label>
+            <input class="form-control" id="username">
+            <div id="usernameError" ></div>
+        </div>
+        
+        <div class="mb-3 col-md-4">
+            <label for="password1" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password1">
+        </div>
+            
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+
+    </form>
+    
+    <script>
+        document.getElementById('signUpForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evita o envio padrão do formulário
+
+        formData = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password1: document.getElementById('password1').value,
+                password2: document.getElementById('password2').value,
+                first_name: document.getElementById('first_name').value,
+                last_name: document.getElementById('last_name').value,
+        }
+
+
+        // Captura o token CSRF do meta tag
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // Get the CSRF token
+
+        fetch('/sign-up/createaccountAPI/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            body: JSON.stringify(formData)
+            })
+            .then(response => {
+            if (response.ok) {
+                return response.json(); // Parse the response JSON
+            } 
+            else {
+                return response.json().then(errorData => {
+                // Lança um erro com os dados detalhados da resposta
+                    throw errorData;
+
+                        }
+            )}
+            
+            })
+            .then(data => {
+                // Handle success (data contains the response)
+                if (data.message) {
+                    alert(data.message); // Alert the success message
+                }
+            })
+            .catch(errorData => {
+                document.getElementById('usernameError').innerText = "";
+                document.getElementById('passwordError').innerText = "";
+
+                document.getElementById('usernameError').classList.remove("alert", "alert-danger");
+                document.getElementById('passwordError').classList.remove("alert", "alert-danger");
+
+                if (errorData.username){
+                    document.getElementById('usernameError').innerText = errorData.username;
+                    document.getElementById('usernameError').classList.add("alert", "alert-danger");
+                }
+                if (errorData.password1){
+                    document.getElementById('passwordError').innerText = errorData.password1;
+                    document.getElementById('passwordError').classList.add("alert", "alert-danger");
+
+                }
+                if (errorData.password){
+                    document.getElementById('passwordError').innerText = errorData.password;
+                    document.getElementById('passwordError').classList.add("alert", "alert-danger");
+                }
+                if (errorData.first_name){
+                    document.getElementById('firstNameError').innerText = errorData.first_name;
+                    document.getElementById('firstNameError').classList.add("alert", "alert-danger");
+                }
+                if (errorData.last_name){
+                    document.getElementById('lastNameError').innerText = errorData.last_name;
+                    document.getElementById('lastNameError').classList.add("alert", "alert-danger");
+                }
+            });
+            });
+    </script>
+
+</body>
+</html>
