@@ -16,6 +16,14 @@ class AccountSerializer(serializers.ModelSerializer):
         validators=[UniqueValidator(queryset=Account.objects.all())],
         min_length = 3,
     )
+    first_name = serializers.CharField(
+        required=True,
+        min_length = 3,
+    )
+    last_name = serializers.CharField(
+        required=True,
+        min_length = 3,
+    )
 
     #* Passwords need to be write_only for safety reasons!
     password1 = serializers.CharField(write_only=True, required=True, validators=[validate_password])

@@ -40,11 +40,13 @@
         <div class="mb-3 col-md-4">
             <label for="first_name" class="form-label">First name</label>
             <input class="form-control" id="first_name">
+            <div id="firstNameError"  role="alert"></div>
         </div>
 
         <div class="mb-3 col-md-4">
             <label for="last_name" class="form-label">Last name</label>
             <input class="form-control" id="last_name">
+            <div id="lastNameError"  role="alert"></div>
         </div>
             
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -116,7 +118,14 @@
                 if (errorData.password){
                     document.getElementById('passwordError').innerText = errorData.password;
                     document.getElementById('passwordError').classList.add("alert", "alert-danger");
-
+                }
+                if (errorData.first_name){
+                    document.getElementById('firstNameError').innerText = errorData.first_name;
+                    document.getElementById('firstNameError').classList.add("alert", "alert-danger");
+                }
+                if (errorData.last_name){
+                    document.getElementById('lastNameError').innerText = errorData.last_name;
+                    document.getElementById('lastNameError').classList.add("alert", "alert-danger");
                 }
             });
             });
