@@ -63,9 +63,9 @@
             
             })
             .then(data => {
-                // Handle success (data contains the response)
                 if (data.message) {
-                    alert(data.message); // Alert the success message
+                    alert(data.message); 
+                    window.location.href = data.redirect_url;
                 }
             })
             .catch(errorData => {
