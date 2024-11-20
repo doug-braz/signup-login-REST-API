@@ -18,8 +18,10 @@
         </div>
         
         <div class="mb-3 col-md-4">
-            <label for="password1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password1">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password">
+            <div id="passwordError" ></div>
+
         </div>
             
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -28,24 +30,18 @@
 
     </form>
     
-    <!-- <script>
-        document.getElementById('signUpForm').addEventListener('submit', function(event) {
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Evita o envio padrão do formulário
 
         formData = {
                 username: document.getElementById('username').value,
-                email: document.getElementById('email').value,
-                password1: document.getElementById('password1').value,
-                password2: document.getElementById('password2').value,
-                first_name: document.getElementById('first_name').value,
-                last_name: document.getElementById('last_name').value,
+                password: document.getElementById('password').value,
         }
 
-
-        // Captura o token CSRF do meta tag
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // Get the CSRF token
 
-        fetch('/sign-up/createaccountAPI/', {
+        fetch('/login/loginAPI/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -83,26 +79,15 @@
                     document.getElementById('usernameError').innerText = errorData.username;
                     document.getElementById('usernameError').classList.add("alert", "alert-danger");
                 }
-                if (errorData.password1){
-                    document.getElementById('passwordError').innerText = errorData.password1;
-                    document.getElementById('passwordError').classList.add("alert", "alert-danger");
-
-                }
                 if (errorData.password){
                     document.getElementById('passwordError').innerText = errorData.password;
                     document.getElementById('passwordError').classList.add("alert", "alert-danger");
+
                 }
-                if (errorData.first_name){
-                    document.getElementById('firstNameError').innerText = errorData.first_name;
-                    document.getElementById('firstNameError').classList.add("alert", "alert-danger");
-                }
-                if (errorData.last_name){
-                    document.getElementById('lastNameError').innerText = errorData.last_name;
-                    document.getElementById('lastNameError').classList.add("alert", "alert-danger");
-                }
+                
             });
             });
-    </script> -->
+    </script>
 
 </body>
 </html>
