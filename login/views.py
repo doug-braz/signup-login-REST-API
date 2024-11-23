@@ -9,7 +9,9 @@ from rest_framework.authtoken.models import Token
 
 
 def Login(request):
-    return render(request, 'login/login.html')
+    if not request.user.is_authenticated:
+        return render(request, 'login/login.html')
+    return render(request, 'homepage/home.html')
 
 class LoginView(APIView):
     def post(self, request):
