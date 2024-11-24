@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    This is the menu! <br />
+{% extends 'homepage/base.html' %}
+{% block content %}
+This is the menu! <br />
 
     {% if user.is_authenticated %}
     You are logged in! <br />
@@ -14,5 +8,5 @@
     {% else %}
     <a href="{% url 'login' %}"> Login </a>
     {% endif %}
-</body>
-</html>
+
+{% endblock %}
