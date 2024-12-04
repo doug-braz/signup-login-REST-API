@@ -32,7 +32,7 @@
     
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Evita o envio padrão do formulário
+        event.preventDefault(); 
 
         formData = {
                 username: document.getElementById('username').value,
@@ -55,20 +55,25 @@
             } 
             else {
                 return response.json().then(errorData => {
-                // Lança um erro com os dados detalhados da resposta
                     throw errorData;
-
                         }
             )}
             
             })
             .then(data => {
                 if (data.message) {
-                    alert(data.message); 
+                    alert(data.message);
+                } 
+                if (data.redirect_url) {
                     window.location.href = data.redirect_url;
                 }
+                    
             })
             .catch(errorData => {
+
+                if (errorData.message) {
+                    alert(errorData.message);
+                }
                 document.getElementById('usernameError').innerText = "";
                 document.getElementById('passwordError').innerText = "";
 

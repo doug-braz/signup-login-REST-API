@@ -20,7 +20,10 @@ class LoginView(APIView):
             user = serializer.validated_data['user']
             login(request, user)
             return Response({"message":"Login successful", "user_id":user.id, "redirect_url":"/"})
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+                {"message":"Incorrect login or password. Please try again!",
+                "errors": serializer.errors,}, 
+                status=status.HTTP_400_BAD_REQUEST)
 
 def Logout(request):
     logout(request)
